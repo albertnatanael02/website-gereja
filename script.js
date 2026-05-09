@@ -181,7 +181,7 @@ document.addEventListener(
 
           events:{
             googleCalendarId:
-              "https://calendar.google.com/calendar/embed?src=multimediagiabudiman%40gmail.com&ctz=Asia%2FJakarta"
+              "multimediagiabudiman@gmail.com"
           },
 
           eventClick:function(info){
