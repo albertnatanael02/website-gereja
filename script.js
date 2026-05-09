@@ -354,7 +354,7 @@ document.addEventListener(
           },
 
           googleCalendarApiKey:
-            "MASUKKAN_API_KEY_ANDA",
+            "AIzaSyDLHZZ_VnhrjQpbHQ7h37OhvC_iT5tGlMA",
 
           events:{
             googleCalendarId:
