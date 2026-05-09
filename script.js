@@ -1,182 +1,100 @@
-let images = [];
+/* =========================
+   MOBILE MENU
+========================= */
 
-let currentIndex = 0;
+const menuToggle =
+  document.getElementById("menuToggle");
+
+const navMenu =
+  document.getElementById("navMenu");
+
+menuToggle.addEventListener(
+  "click",
+  function(){
+
+    navMenu.classList.toggle(
+      "active"
+    );
+
+  }
+);
+
+/* =========================
+   WARTA JEMAAT
+========================= */
+
+let slides = [];
+
+let currentSlide = 0;
 
 const mainSlide =
-  document.getElementById("mainSlide");
-
-const thumbnailContainer =
-  document.getElementById("thumbnailContainer");
-
-const fullscreenImage =
-  document.getElementById("fullscreenImage");
+  document.getElementById(
+    "mainSlide"
+  );
 
 const fullscreenModal =
-  document.getElementById("fullscreenModal");
+  document.getElementById(
+    "fullscreenModal"
+  );
 
-/* =========================
-   LOAD SLIDES JSON
-========================= */
+const fullscreenImage =
+  document.getElementById(
+    "fullscreenImage"
+  );
 
-async function loadSlides(){
+fetch("warta/slides.json")
 
-  try{
+  .then(response => response.json())
 
-    const response =
-      await fetch("warta/slides.json");
+  .then(data => {
 
-    const data = await response.json();
+    slides = data;
 
-    images = data.map(img => `warta/${img}`);
+    showSlide(0);
 
-    renderThumbnails();
+    generateThumbnails();
 
-    updateSlide(false);
+  });
 
-  }catch(error){
+function showSlide(index){
 
-    console.error(
-      "Gagal load slides.json",
-      error
-    );
+  currentSlide = index;
 
-  }
+  mainSlide.src =
+    `warta/${slides[index]}`;
+
+  fullscreenImage.src =
+    `warta/${slides[index]}`;
 
 }
 
-/* =========================
-   RENDER THUMBNAILS
-========================= */
+function generateThumbnails(){
 
-function renderThumbnails(){
+  const container =
+    document.getElementById(
+      "thumbnailContainer"
+    );
 
-  thumbnailContainer.innerHTML = "";
+  slides.forEach(
+    (slide,index) => {
 
-  images.forEach((img, index)=>{
+      const img =
+        document.createElement("img");
 
-    const thumb =
-      document.createElement("img");
+      img.src =
+        `warta/${slide}`;
 
-    thumb.src = img;
+      img.onclick =
+        () => showSlide(index);
 
-    if(index === currentIndex){
-
-      thumb.classList.add("active-thumb");
+      container.appendChild(img);
 
     }
-
-    thumb.onclick = ()=>{
-
-      currentIndex = index;
-
-      updateSlide();
-
-    };
-
-    thumbnailContainer.appendChild(thumb);
-
-  });
+  );
 
 }
-
-/* =========================
-   UPDATE ACTIVE THUMBNAIL
-========================= */
-
-function updateActiveThumbnail(){
-
-  const thumbs =
-    thumbnailContainer.querySelectorAll("img");
-
-  thumbs.forEach((thumb, index)=>{
-
-    thumb.classList.toggle(
-      "active-thumb",
-      index === currentIndex
-    );
-
-  });
-
-  const activeThumb =
-    document.querySelector(".active-thumb");
-
-  if(activeThumb){
-
-    activeThumb.scrollIntoView({
-
-      behavior:"smooth",
-      inline:"center",
-      block:"nearest"
-
-    });
-
-  }
-
-}
-
-/* =========================
-   UPDATE SLIDE
-========================= */
-
-function updateSlide(animated = true){
-
-  if(images.length === 0) return;
-
-  if(animated){
-
-    mainSlide.classList.remove(
-      "slide-animation"
-    );
-
-    void mainSlide.offsetWidth;
-
-    mainSlide.classList.add(
-      "slide-animation"
-    );
-
-  }
-
-  mainSlide.src = images[currentIndex];
-
-  fullscreenImage.src =
-    images[currentIndex];
-
-  updateActiveThumbnail();
-
-}
-
-/* =========================
-   CHANGE SLIDE
-========================= */
-
-function changeSlide(direction){
-
-  currentIndex += direction;
-
-  if(currentIndex >= images.length){
-
-    currentIndex = 0;
-
-  }
-
-  if(currentIndex < 0){
-
-    currentIndex = images.length - 1;
-
-  }
-
-  updateSlide();
-
-}
-
-/* =========================
-   FULLSCREEN
-========================= */
 
 function openFullscreen(){
-
-  fullscreenImage.src =
-    images[currentIndex];
 
   fullscreenModal.style.display =
     "flex";
@@ -190,124 +108,26 @@ function closeFullscreen(){
 
 }
 
-fullscreenModal.addEventListener(
-  "click",
-  function(e){
+function changeSlide(direction){
 
-    if(e.target === this){
+  currentSlide += direction;
 
-      closeFullscreen();
+  if(currentSlide < 0){
 
-    }
-
-  }
-);
-
-/* =========================
-   SWIPE SUPPORT
-========================= */
-
-let startX = 0;
-let endX = 0;
-
-function handleSwipe(){
-
-  const diff = startX - endX;
-
-  if(diff > 50){
-
-    changeSlide(1);
+    currentSlide =
+      slides.length - 1;
 
   }
 
-  if(diff < -50){
+  if(currentSlide >= slides.length){
 
-    changeSlide(-1);
+    currentSlide = 0;
 
   }
+
+  showSlide(currentSlide);
 
 }
-
-/* MAIN SLIDE */
-
-mainSlide.addEventListener(
-  "touchstart",
-  (e)=>{
-
-    startX = e.touches[0].clientX;
-
-  }
-);
-
-mainSlide.addEventListener(
-  "touchend",
-  (e)=>{
-
-    endX =
-      e.changedTouches[0].clientX;
-
-    handleSwipe();
-
-  }
-);
-
-/* FULLSCREEN */
-
-fullscreenImage.addEventListener(
-  "touchstart",
-  (e)=>{
-
-    startX = e.touches[0].clientX;
-
-  }
-);
-
-fullscreenImage.addEventListener(
-  "touchend",
-  (e)=>{
-
-    endX =
-      e.changedTouches[0].clientX;
-
-    handleSwipe();
-
-  }
-);
-
-/* =========================
-   KEYBOARD SUPPORT
-========================= */
-
-document.addEventListener(
-  "keydown",
-  (e)=>{
-
-    if(e.key === "ArrowRight"){
-
-      changeSlide(1);
-
-    }
-
-    if(e.key === "ArrowLeft"){
-
-      changeSlide(-1);
-
-    }
-
-    if(e.key === "Escape"){
-
-      closeFullscreen();
-
-    }
-
-  }
-);
-
-/* =========================
-   INIT
-========================= */
-
-loadSlides();
 
 /* =========================
    GOOGLE CALENDAR
@@ -318,19 +138,22 @@ document.addEventListener(
   function(){
 
     const calendarEl =
-      document.getElementById("calendar");
+      document.getElementById(
+        "calendar"
+      );
 
-    const mobileView =
-      window.innerWidth < 768
-        ? "listMonth"
-        : "dayGridMonth";
+    const isMobile =
+      window.innerWidth < 768;
 
     const calendar =
       new FullCalendar.Calendar(
         calendarEl,
         {
 
-          initialView: mobileView,
+          initialView:
+            isMobile
+              ? "listMonth"
+              : "dayGridMonth",
 
           contentHeight:"auto",
 
@@ -342,7 +165,7 @@ document.addEventListener(
             left:"prev,next today",
             center:"title",
             right:
-              window.innerWidth < 768
+              isMobile
                 ? ""
                 : "dayGridMonth,listMonth"
           },
@@ -358,7 +181,7 @@ document.addEventListener(
 
           events:{
             googleCalendarId:
-              "multimediagiabudiman@gmail.com"
+              "MASUKKAN_CALENDAR_ID"
           },
 
           eventClick:function(info){
@@ -376,31 +199,6 @@ document.addEventListener(
       );
 
     calendar.render();
-
-    /* =========================
-       RESPONSIVE VIEW SWITCH
-    ========================= */
-
-    window.addEventListener(
-      "resize",
-      function(){
-
-        if(window.innerWidth < 768){
-
-          calendar.changeView(
-            "listMonth"
-          );
-
-        }else{
-
-          calendar.changeView(
-            "dayGridMonth"
-          );
-
-        }
-
-      }
-    );
 
   }
 );
