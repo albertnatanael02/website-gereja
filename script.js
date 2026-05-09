@@ -21,6 +21,8 @@ const fullscreenModal =
 
 function loadImages(){
 
+  let loadedCount = 0;
+
   for(let i = 1; i <= totalSlides; i++){
 
     const imgPath = `warta/${i}.jpg`;
@@ -33,11 +35,27 @@ function loadImages(){
 
       images.push(imgPath);
 
-      if(images.length === 1){
+      loadedCount++;
+
+      // setelah semua gambar selesai load
+      if(loadedCount === totalSlides){
+
+        images.sort((a, b)=>{
+
+          const numA =
+            parseInt(a.match(/\d+/)[0]);
+
+          const numB =
+            parseInt(b.match(/\d+/)[0]);
+
+          return numA - numB;
+
+        });
 
         renderThumbnails();
 
         updateSlide(false);
+
       }
 
     };
