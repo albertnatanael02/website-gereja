@@ -1,100 +1,182 @@
+let images = [];
+
+let currentIndex = 0;
+
+const mainSlide =
+  document.getElementById("mainSlide");
+
+const thumbnailContainer =
+  document.getElementById("thumbnailContainer");
+
+const fullscreenImage =
+  document.getElementById("fullscreenImage");
+
+const fullscreenModal =
+  document.getElementById("fullscreenModal");
+
 /* =========================
-   MOBILE MENU
+   LOAD SLIDES JSON
 ========================= */
 
-const menuToggle =
-  document.getElementById("menuToggle");
+async function loadSlides(){
 
-const navMenu =
-  document.getElementById("navMenu");
+  try{
 
-menuToggle.addEventListener(
-  "click",
-  function(){
+    const response =
+      await fetch("warta/slides.json");
 
-    navMenu.classList.toggle(
-      "active"
+    const data = await response.json();
+
+    images = data.map(img => `warta/${img}`);
+
+    renderThumbnails();
+
+    updateSlide(false);
+
+  }catch(error){
+
+    console.error(
+      "Gagal load slides.json",
+      error
     );
 
   }
-);
+
+}
 
 /* =========================
-   WARTA JEMAAT
+   RENDER THUMBNAILS
 ========================= */
 
-let slides = [];
+function renderThumbnails(){
 
-let currentSlide = 0;
+  thumbnailContainer.innerHTML = "";
 
-const mainSlide =
-  document.getElementById(
-    "mainSlide"
-  );
+  images.forEach((img, index)=>{
 
-const fullscreenModal =
-  document.getElementById(
-    "fullscreenModal"
-  );
+    const thumb =
+      document.createElement("img");
 
-const fullscreenImage =
-  document.getElementById(
-    "fullscreenImage"
-  );
+    thumb.src = img;
 
-fetch("warta/slides.json")
+    if(index === currentIndex){
 
-  .then(response => response.json())
+      thumb.classList.add("active-thumb");
 
-  .then(data => {
+    }
 
-    slides = data;
+    thumb.onclick = ()=>{
 
-    showSlide(0);
+      currentIndex = index;
 
-    generateThumbnails();
+      updateSlide();
+
+    };
+
+    thumbnailContainer.appendChild(thumb);
 
   });
 
-function showSlide(index){
-
-  currentSlide = index;
-
-  mainSlide.src =
-    `warta/${slides[index]}`;
-
-  fullscreenImage.src =
-    `warta/${slides[index]}`;
-
 }
 
-function generateThumbnails(){
+/* =========================
+   UPDATE ACTIVE THUMBNAIL
+========================= */
 
-  const container =
-    document.getElementById(
-      "thumbnailContainer"
+function updateActiveThumbnail(){
+
+  const thumbs =
+    thumbnailContainer.querySelectorAll("img");
+
+  thumbs.forEach((thumb, index)=>{
+
+    thumb.classList.toggle(
+      "active-thumb",
+      index === currentIndex
     );
 
-  slides.forEach(
-    (slide,index) => {
+  });
 
-      const img =
-        document.createElement("img");
+  const activeThumb =
+    document.querySelector(".active-thumb");
 
-      img.src =
-        `warta/${slide}`;
+  if(activeThumb){
 
-      img.onclick =
-        () => showSlide(index);
+    activeThumb.scrollIntoView({
 
-      container.appendChild(img);
+      behavior:"smooth",
+      inline:"center",
+      block:"nearest"
 
-    }
-  );
+    });
+
+  }
 
 }
 
+/* =========================
+   UPDATE SLIDE
+========================= */
+
+function updateSlide(animated = true){
+
+  if(images.length === 0) return;
+
+  if(animated){
+
+    mainSlide.classList.remove(
+      "slide-animation"
+    );
+
+    void mainSlide.offsetWidth;
+
+    mainSlide.classList.add(
+      "slide-animation"
+    );
+
+  }
+
+  mainSlide.src = images[currentIndex];
+
+  fullscreenImage.src =
+    images[currentIndex];
+
+  updateActiveThumbnail();
+
+}
+
+/* =========================
+   CHANGE SLIDE
+========================= */
+
+function changeSlide(direction){
+
+  currentIndex += direction;
+
+  if(currentIndex >= images.length){
+
+    currentIndex = 0;
+
+  }
+
+  if(currentIndex < 0){
+
+    currentIndex = images.length - 1;
+
+  }
+
+  updateSlide();
+
+}
+
+/* =========================
+   FULLSCREEN
+========================= */
+
 function openFullscreen(){
+
+  fullscreenImage.src =
+    images[currentIndex];
 
   fullscreenModal.style.display =
     "flex";
@@ -108,26 +190,124 @@ function closeFullscreen(){
 
 }
 
-function changeSlide(direction){
+fullscreenModal.addEventListener(
+  "click",
+  function(e){
 
-  currentSlide += direction;
+    if(e.target === this){
 
-  if(currentSlide < 0){
+      closeFullscreen();
 
-    currentSlide =
-      slides.length - 1;
+    }
+
+  }
+);
+
+/* =========================
+   SWIPE SUPPORT
+========================= */
+
+let startX = 0;
+let endX = 0;
+
+function handleSwipe(){
+
+  const diff = startX - endX;
+
+  if(diff > 50){
+
+    changeSlide(1);
 
   }
 
-  if(currentSlide >= slides.length){
+  if(diff < -50){
 
-    currentSlide = 0;
+    changeSlide(-1);
 
   }
-
-  showSlide(currentSlide);
 
 }
+
+/* MAIN SLIDE */
+
+mainSlide.addEventListener(
+  "touchstart",
+  (e)=>{
+
+    startX = e.touches[0].clientX;
+
+  }
+);
+
+mainSlide.addEventListener(
+  "touchend",
+  (e)=>{
+
+    endX =
+      e.changedTouches[0].clientX;
+
+    handleSwipe();
+
+  }
+);
+
+/* FULLSCREEN */
+
+fullscreenImage.addEventListener(
+  "touchstart",
+  (e)=>{
+
+    startX = e.touches[0].clientX;
+
+  }
+);
+
+fullscreenImage.addEventListener(
+  "touchend",
+  (e)=>{
+
+    endX =
+      e.changedTouches[0].clientX;
+
+    handleSwipe();
+
+  }
+);
+
+/* =========================
+   KEYBOARD SUPPORT
+========================= */
+
+document.addEventListener(
+  "keydown",
+  (e)=>{
+
+    if(e.key === "ArrowRight"){
+
+      changeSlide(1);
+
+    }
+
+    if(e.key === "ArrowLeft"){
+
+      changeSlide(-1);
+
+    }
+
+    if(e.key === "Escape"){
+
+      closeFullscreen();
+
+    }
+
+  }
+);
+
+/* =========================
+   INIT
+========================= */
+
+loadSlides();
 
 /* =========================
    GOOGLE CALENDAR
@@ -138,24 +318,21 @@ document.addEventListener(
   function(){
 
     const calendarEl =
-      document.getElementById(
-        "calendar"
-      );
+      document.getElementById("calendar");
 
-    const isMobile =
-      window.innerWidth < 768;
+    const mobileView =
+      window.innerWidth < 768
+        ? "listMonth"
+        : "dayGridMonth";
 
     const calendar =
       new FullCalendar.Calendar(
         calendarEl,
         {
 
-          initialView:
-            isMobile
-              ? "listMonth"
-              : "dayGridMonth",
+          initialView: mobileView,
 
-          contentHeight:"auto",
+          height:"auto",
 
           locale:"id",
 
@@ -165,7 +342,7 @@ document.addEventListener(
             left:"prev,next today",
             center:"title",
             right:
-              isMobile
+              window.innerWidth < 768
                 ? ""
                 : "dayGridMonth,listMonth"
           },
@@ -177,7 +354,7 @@ document.addEventListener(
           },
 
           googleCalendarApiKey:
-            "AIzaSyDLHZZ_VnhrjQpbHQ7h37OhvC_iT5tGlMA",
+            "MASUKKAN_API_KEY_ANDA",
 
           events:{
             googleCalendarId:
@@ -199,6 +376,31 @@ document.addEventListener(
       );
 
     calendar.render();
+
+    /* =========================
+       RESPONSIVE VIEW SWITCH
+    ========================= */
+
+    window.addEventListener(
+      "resize",
+      function(){
+
+        if(window.innerWidth < 768){
+
+          calendar.changeView(
+            "listMonth"
+          );
+
+        }else{
+
+          calendar.changeView(
+            "dayGridMonth"
+          );
+
+        }
+
+      }
+    );
 
   }
 );
