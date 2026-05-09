@@ -143,15 +143,6 @@
         onclick="openFullscreen()"
       >
 
-      <!-- BUTTON -->
-      <button class="prev" onclick="changeSlide(-1)">
-        ❮
-      </button>
-
-      <button class="next" onclick="changeSlide(1)">
-        ❯
-      </button>
-
     </div>
 
   </div>
@@ -165,11 +156,29 @@
 <!-- FULLSCREEN -->
 <div id="fullscreenModal" class="fullscreen-modal">
 
+  <!-- CLOSE -->
   <span class="close-btn" onclick="closeFullscreen()">
     &times;
   </span>
 
+  <!-- PREV -->
+  <button
+    class="fullscreen-prev"
+    onclick="changeSlide(-1)"
+  >
+    ❮
+  </button>
+
+  <!-- IMAGE -->
   <img id="fullscreenImage">
+
+  <!-- NEXT -->
+  <button
+    class="fullscreen-next"
+    onclick="changeSlide(1)"
+  >
+    ❯
+  </button>
 
 </div>
 

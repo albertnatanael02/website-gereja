@@ -567,3 +567,107 @@ footer{
   }
 
 }
+/* =========================
+   FULLSCREEN BUTTON
+========================= */
+
+.fullscreen-prev,
+.fullscreen-next{
+
+  position:absolute;
+
+  top:50%;
+
+  transform:translateY(-50%);
+
+  background:rgba(0,0,0,0.35);
+
+  color:white;
+
+  border:none;
+
+  width:55px;
+
+  height:55px;
+
+  border-radius:50%;
+
+  font-size:28px;
+
+  cursor:pointer;
+
+  z-index:100000;
+
+  transition:0.3s;
+
+  backdrop-filter:blur(5px);
+
+}
+
+/* HOVER */
+.fullscreen-prev:hover,
+.fullscreen-next:hover{
+
+  background:rgba(255,255,255,0.2);
+
+}
+
+/* POSISI DI LUAR GAMBAR */
+.fullscreen-prev{
+
+  left:25px;
+
+}
+
+.fullscreen-next{
+
+  right:25px;
+
+}
+
+/* FULLSCREEN IMAGE */
+.fullscreen-modal img{
+
+  max-width:88%;
+
+  max-height:92%;
+
+  object-fit:contain;
+
+  border-radius:12px;
+
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+  .fullscreen-prev,
+  .fullscreen-next{
+
+    width:45px;
+
+    height:45px;
+
+    font-size:22px;
+
+  }
+
+  .fullscreen-prev{
+
+    left:8px;
+
+  }
+
+  .fullscreen-next{
+
+    right:8px;
+
+  }
+
+  .fullscreen-modal img{
+
+    max-width:82%;
+
+  }
+
+}
