@@ -830,3 +830,97 @@ footer{
   }
 
 }
+
+/* =========================
+   FIX FULLCALENDAR MOBILE
+========================= */
+
+@media(max-width:768px){
+
+  /* SECTION */
+
+  #church-calendar{
+    width:100%;
+    padding:20px 10px !important;
+    overflow:hidden;
+  }
+
+  /* CONTAINER */
+
+  #calendar{
+    width:100% !important;
+    max-width:100% !important;
+
+    padding:8px !important;
+
+    overflow-x:auto;
+
+    border-radius:16px;
+  }
+
+  /* FULLCALENDAR ROOT */
+
+  .fc{
+    width:100% !important;
+  }
+
+  /* TOOLBAR */
+
+  .fc-header-toolbar{
+    display:flex !important;
+    flex-direction:column !important;
+
+    gap:10px;
+
+    align-items:center;
+  }
+
+  .fc-toolbar-chunk{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+
+    gap:8px;
+  }
+
+  .fc-toolbar-title{
+    font-size:20px !important;
+    text-align:center;
+  }
+
+  /* BUTTON */
+
+  .fc-button{
+    font-size:12px !important;
+    padding:6px 10px !important;
+  }
+
+  /* TABLE */
+
+  .fc-scrollgrid{
+    width:100% !important;
+  }
+
+  table{
+    width:100% !important;
+  }
+
+  /* DAY CELL */
+
+  .fc-daygrid-day-frame{
+    min-height:65px !important;
+  }
+
+  /* EVENT */
+
+  .fc-event{
+    font-size:10px !important;
+  }
+
+  /* LIST VIEW */
+
+  .fc-list{
+    width:100% !important;
+  }
+
+}

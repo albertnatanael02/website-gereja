@@ -332,7 +332,7 @@ document.addEventListener(
 
           initialView: mobileView,
 
-          height:"auto",
+          contentHeight:"auto",
 
           locale:"id",
 
@@ -341,7 +341,10 @@ document.addEventListener(
           headerToolbar:{
             left:"prev,next today",
             center:"title",
-            right:"dayGridMonth,listMonth"
+            right:
+              window.innerWidth < 768
+                ? ""
+                : "dayGridMonth,listMonth"
           },
 
           buttonText:{
