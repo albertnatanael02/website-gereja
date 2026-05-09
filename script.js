@@ -177,11 +177,11 @@ document.addEventListener(
           },
 
           googleCalendarApiKey:
-            "MASUKKAN_API_KEY_ANDA",
+            "AIzaSyDLHZZ_VnhrjQpbHQ7h37OhvC_iT5tGlMA",
 
           events:{
             googleCalendarId:
-              "MASUKKAN_CALENDAR_ID"
+              "https://calendar.google.com/calendar/embed?src=multimediagiabudiman%40gmail.com&ctz=Asia%2FJakarta"
           },
 
           eventClick:function(info){
