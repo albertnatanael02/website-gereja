@@ -21,44 +21,38 @@ const fullscreenModal =
 
 function loadImages(){
 
-  let loadedCount = 0;
-
   for(let i = 1; i <= totalSlides; i++){
 
     const imgPath = `warta/${i}.jpg`;
 
     const testImg = new Image();
 
-    testImg.src = imgPath;
-
     testImg.onload = function(){
 
       images.push(imgPath);
 
-      loadedCount++;
+      // urutkan nomor slide
+      images.sort((a, b)=>{
 
-      // setelah semua gambar selesai load
-      if(loadedCount === totalSlides){
+        const numA =
+          parseInt(a.match(/\d+/)[0]);
 
-        images.sort((a, b)=>{
+        const numB =
+          parseInt(b.match(/\d+/)[0]);
 
-          const numA =
-            parseInt(a.match(/\d+/)[0]);
+        return numA - numB;
 
-          const numB =
-            parseInt(b.match(/\d+/)[0]);
+      });
 
-          return numA - numB;
+      // render ulang thumbnail
+      renderThumbnails();
 
-        });
-
-        renderThumbnails();
-
-        updateSlide(false);
-
-      }
+      // update slide utama
+      updateSlide(false);
 
     };
+
+    testImg.src = imgPath;
 
   }
 
