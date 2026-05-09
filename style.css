@@ -750,3 +750,83 @@ footer{
   }
 
 }
+
+/* =========================
+   MOBILE CALENDAR FIX
+========================= */
+
+@media(max-width:768px){
+
+  /* SECTION */
+
+  #church-calendar{
+    padding:50px 15px;
+  }
+
+  #calendar{
+    padding:12px;
+    border-radius:16px;
+  }
+
+  /* TOOLBAR */
+
+  .fc .fc-toolbar{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+
+  .fc-toolbar-title{
+    font-size:22px !important;
+    text-align:center;
+  }
+
+  .fc-toolbar-chunk{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+
+  .fc-button{
+    padding:8px 12px !important;
+    font-size:13px !important;
+  }
+
+  /* MONTH VIEW */
+
+  .fc-daygrid-day-frame{
+    min-height:70px !important;
+  }
+
+  .fc-daygrid-event{
+    font-size:11px !important;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  /* LIST VIEW */
+
+  .fc-list{
+    border-radius:14px;
+    overflow:hidden;
+  }
+
+  .fc-list-event-title{
+    font-size:14px;
+    font-weight:600;
+  }
+
+  .fc-list-event-time{
+    width:70px;
+  }
+
+  /* TODAY COLOR */
+
+  .fc-day-today{
+    background:#fff7db !important;
+  }
+
+}

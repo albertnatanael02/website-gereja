@@ -320,16 +320,23 @@ document.addEventListener(
     const calendarEl =
       document.getElementById("calendar");
 
+    const mobileView =
+      window.innerWidth < 768
+        ? "listMonth"
+        : "dayGridMonth";
+
     const calendar =
       new FullCalendar.Calendar(
         calendarEl,
         {
 
-          initialView:"dayGridMonth",
+          initialView: mobileView,
 
           height:"auto",
 
           locale:"id",
+
+          displayEventTime:false,
 
           headerToolbar:{
             left:"prev,next today",
@@ -344,7 +351,7 @@ document.addEventListener(
           },
 
           googleCalendarApiKey:
-            "AIzaSyDLHZZ_VnhrjQpbHQ7h37OhvC_iT5tGlMA",
+            "MASUKKAN_API_KEY_ANDA",
 
           events:{
             googleCalendarId:
@@ -366,6 +373,31 @@ document.addEventListener(
       );
 
     calendar.render();
+
+    /* =========================
+       RESPONSIVE VIEW SWITCH
+    ========================= */
+
+    window.addEventListener(
+      "resize",
+      function(){
+
+        if(window.innerWidth < 768){
+
+          calendar.changeView(
+            "listMonth"
+          );
+
+        }else{
+
+          calendar.changeView(
+            "dayGridMonth"
+          );
+
+        }
+
+      }
+    );
 
   }
 );
