@@ -1,5 +1,4 @@
-const images = [];
-const totalSlides = 14;
+let images = [];
 
 let currentIndex = 0;
 
@@ -16,43 +15,30 @@ const fullscreenModal =
   document.getElementById("fullscreenModal");
 
 /* =========================
-   LOAD IMAGES
+   LOAD SLIDES JSON
 ========================= */
 
-function loadImages(){
+async function loadSlides(){
 
-  for(let i = 1; i <= totalSlides; i++){
+  try{
 
-    const imgPath = `warta/${i}.jpg`;
+    const response =
+      await fetch("warta/slides.json");
 
-    const testImg = new Image();
+    const data = await response.json();
 
-    testImg.onload = function(){
+    images = data.map(img => `warta/${img}`);
 
-      images.push(imgPath);
+    renderThumbnails();
 
-      // urutkan nomor slide
-      images.sort((a, b)=>{
+    updateSlide(false);
 
-        const numA =
-          parseInt(a.match(/\d+/)[0]);
+  }catch(error){
 
-        const numB =
-          parseInt(b.match(/\d+/)[0]);
-
-        return numA - numB;
-
-      });
-
-      // render ulang thumbnail
-      renderThumbnails();
-
-      // update slide utama
-      updateSlide(false);
-
-    };
-
-    testImg.src = imgPath;
+    console.error(
+      "Gagal load slides.json",
+      error
+    );
 
   }
 
@@ -68,12 +54,15 @@ function renderThumbnails(){
 
   images.forEach((img, index)=>{
 
-    const thumb = document.createElement("img");
+    const thumb =
+      document.createElement("img");
 
     thumb.src = img;
 
     if(index === currentIndex){
+
       thumb.classList.add("active-thumb");
+
     }
 
     thumb.onclick = ()=>{
@@ -135,16 +124,22 @@ function updateSlide(animated = true){
 
   if(animated){
 
-    mainSlide.classList.remove("slide-animation");
+    mainSlide.classList.remove(
+      "slide-animation"
+    );
 
     void mainSlide.offsetWidth;
 
-    mainSlide.classList.add("slide-animation");
+    mainSlide.classList.add(
+      "slide-animation"
+    );
+
   }
 
   mainSlide.src = images[currentIndex];
 
-  fullscreenImage.src = images[currentIndex];
+  fullscreenImage.src =
+    images[currentIndex];
 
   updateActiveThumbnail();
 
@@ -159,11 +154,15 @@ function changeSlide(direction){
   currentIndex += direction;
 
   if(currentIndex >= images.length){
+
     currentIndex = 0;
+
   }
 
   if(currentIndex < 0){
+
     currentIndex = images.length - 1;
+
   }
 
   updateSlide();
@@ -176,30 +175,36 @@ function changeSlide(direction){
 
 function openFullscreen(){
 
-  fullscreenImage.src = images[currentIndex];
+  fullscreenImage.src =
+    images[currentIndex];
 
-  fullscreenModal.style.display = "flex";
+  fullscreenModal.style.display =
+    "flex";
 
 }
 
 function closeFullscreen(){
 
-  fullscreenModal.style.display = "none";
+  fullscreenModal.style.display =
+    "none";
 
 }
 
-fullscreenModal.addEventListener("click", function(e){
+fullscreenModal.addEventListener(
+  "click",
+  function(e){
 
-  if(e.target === this){
+    if(e.target === this){
 
-    closeFullscreen();
+      closeFullscreen();
+
+    }
 
   }
-
-});
+);
 
 /* =========================
-   SWIPE
+   SWIPE SUPPORT
 ========================= */
 
 let startX = 0;
@@ -210,69 +215,96 @@ function handleSwipe(){
   const diff = startX - endX;
 
   if(diff > 50){
+
     changeSlide(1);
+
   }
 
   if(diff < -50){
+
     changeSlide(-1);
+
   }
 
 }
 
-/* MAIN SLIDE SWIPE */
+/* MAIN SLIDE */
 
-mainSlide.addEventListener("touchstart", (e)=>{
+mainSlide.addEventListener(
+  "touchstart",
+  (e)=>{
 
-  startX = e.touches[0].clientX;
+    startX = e.touches[0].clientX;
 
-});
+  }
+);
 
-mainSlide.addEventListener("touchend", (e)=>{
+mainSlide.addEventListener(
+  "touchend",
+  (e)=>{
 
-  endX = e.changedTouches[0].clientX;
+    endX =
+      e.changedTouches[0].clientX;
 
-  handleSwipe();
+    handleSwipe();
 
-});
+  }
+);
 
-/* FULLSCREEN SWIPE */
+/* FULLSCREEN */
 
-fullscreenImage.addEventListener("touchstart", (e)=>{
+fullscreenImage.addEventListener(
+  "touchstart",
+  (e)=>{
 
-  startX = e.touches[0].clientX;
+    startX = e.touches[0].clientX;
 
-});
+  }
+);
 
-fullscreenImage.addEventListener("touchend", (e)=>{
+fullscreenImage.addEventListener(
+  "touchend",
+  (e)=>{
 
-  endX = e.changedTouches[0].clientX;
+    endX =
+      e.changedTouches[0].clientX;
 
-  handleSwipe();
+    handleSwipe();
 
-});
+  }
+);
 
 /* =========================
    KEYBOARD SUPPORT
 ========================= */
 
-document.addEventListener("keydown", (e)=>{
+document.addEventListener(
+  "keydown",
+  (e)=>{
 
-  if(e.key === "ArrowRight"){
-    changeSlide(1);
+    if(e.key === "ArrowRight"){
+
+      changeSlide(1);
+
+    }
+
+    if(e.key === "ArrowLeft"){
+
+      changeSlide(-1);
+
+    }
+
+    if(e.key === "Escape"){
+
+      closeFullscreen();
+
+    }
+
   }
-
-  if(e.key === "ArrowLeft"){
-    changeSlide(-1);
-  }
-
-  if(e.key === "Escape"){
-    closeFullscreen();
-  }
-
-});
+);
 
 /* =========================
    INIT
 ========================= */
 
-loadImages();
+loadSlides();
