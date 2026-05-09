@@ -1,5 +1,5 @@
 const images = [];
-const totalSlides = 50;
+const totalSlides = 14;
 
 let currentIndex = 0;
 
