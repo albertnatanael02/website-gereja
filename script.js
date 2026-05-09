@@ -1,13 +1,5 @@
 const images = [];
-
 const totalSlides = 50;
-
-/*
-  Akan mencari:
-  warta/1.jpg
-  warta/2.jpg
-  dst
-*/
 
 for(let i = 1; i <= totalSlides; i++){
 
@@ -22,7 +14,7 @@ for(let i = 1; i <= totalSlides; i++){
     images.push(imgPath);
 
     if(images.length === 1){
-      updateSlide();
+      updateSlide(false);
     }
 
     renderThumbnails();
@@ -31,8 +23,21 @@ for(let i = 1; i <= totalSlides; i++){
 
 let currentIndex = 0;
 
-const mainSlide = document.getElementById("mainSlide");
-const thumbnailContainer = document.getElementById("thumbnailContainer");
+const mainSlide =
+  document.getElementById("mainSlide");
+
+const thumbnailContainer =
+  document.getElementById("thumbnailContainer");
+
+const fullscreenImage =
+  document.getElementById("fullscreenImage");
+
+const fullscreenModal =
+  document.getElementById("fullscreenModal");
+
+/* =========================
+   RENDER THUMBNAIL
+========================= */
 
 function renderThumbnails(){
 
@@ -52,24 +57,44 @@ function renderThumbnails(){
 
       currentIndex = index;
 
-      updateSlide();
+      updateSlide(true);
+
     };
 
     thumbnailContainer.appendChild(thumb);
 
   });
 
+  autoScrollThumbnail();
 }
 
-function updateSlide(){
+/* =========================
+   UPDATE SLIDE
+========================= */
+
+function updateSlide(animated = true){
 
   if(images.length === 0) return;
 
+  if(animated){
+
+    mainSlide.classList.remove("slide-animation");
+
+    void mainSlide.offsetWidth;
+
+    mainSlide.classList.add("slide-animation");
+  }
+
   mainSlide.src = images[currentIndex];
 
-  renderThumbnails();
+  fullscreenImage.src = images[currentIndex];
 
+  renderThumbnails();
 }
+
+/* =========================
+   CHANGE SLIDE
+========================= */
 
 function changeSlide(direction){
 
@@ -83,8 +108,29 @@ function changeSlide(direction){
     currentIndex = images.length - 1;
   }
 
-  updateSlide();
+  updateSlide(true);
+}
 
+/* =========================
+   AUTO SCROLL THUMBNAIL
+========================= */
+
+function autoScrollThumbnail(){
+
+  const activeThumb =
+    document.querySelector(".active-thumb");
+
+  if(activeThumb){
+
+    activeThumb.scrollIntoView({
+
+      behavior:"smooth",
+      inline:"center",
+      block:"nearest"
+
+    });
+
+  }
 }
 
 /* =========================
@@ -93,34 +139,103 @@ function changeSlide(direction){
 
 function openFullscreen(){
 
-  const modal =
-    document.getElementById("fullscreenModal");
-
-  const fullscreenImage =
-    document.getElementById("fullscreenImage");
-
   fullscreenImage.src = images[currentIndex];
 
-  modal.style.display = "flex";
-
+  fullscreenModal.style.display = "flex";
 }
 
 function closeFullscreen(){
 
-  document.getElementById("fullscreenModal")
-  .style.display = "none";
-
+  fullscreenModal.style.display = "none";
 }
 
 /* CLOSE WHEN CLICK BACKGROUND */
-document
-.getElementById("fullscreenModal")
-.addEventListener("click", function(e){
+fullscreenModal.addEventListener("click", function(e){
 
   if(e.target === this){
 
     closeFullscreen();
+  }
 
+});
+
+/* =========================
+   SWIPE MAIN SLIDE
+========================= */
+
+let startX = 0;
+let endX = 0;
+
+mainSlide.addEventListener("touchstart", (e)=>{
+
+  startX = e.touches[0].clientX;
+
+});
+
+mainSlide.addEventListener("touchend", (e)=>{
+
+  endX = e.changedTouches[0].clientX;
+
+  handleSwipe();
+
+});
+
+/* =========================
+   SWIPE FULLSCREEN
+========================= */
+
+fullscreenImage.addEventListener("touchstart", (e)=>{
+
+  startX = e.touches[0].clientX;
+
+});
+
+fullscreenImage.addEventListener("touchend", (e)=>{
+
+  endX = e.changedTouches[0].clientX;
+
+  handleSwipe();
+
+});
+
+/* =========================
+   HANDLE SWIPE
+========================= */
+
+function handleSwipe(){
+
+  const diff = startX - endX;
+
+  if(diff > 50){
+
+    changeSlide(1);
+  }
+
+  if(diff < -50){
+
+    changeSlide(-1);
+  }
+}
+
+/* =========================
+   KEYBOARD SUPPORT
+========================= */
+
+document.addEventListener("keydown", (e)=>{
+
+  if(e.key === "ArrowRight"){
+
+    changeSlide(1);
+  }
+
+  if(e.key === "ArrowLeft"){
+
+    changeSlide(-1);
+  }
+
+  if(e.key === "Escape"){
+
+    closeFullscreen();
   }
 
 });
