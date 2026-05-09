@@ -672,3 +672,81 @@ footer{
   }
 
 }
+
+/* =========================
+   FULLCALENDAR
+========================= */
+
+#church-calendar{
+  background:#f8fafc;
+}
+
+#calendar{
+  background:white;
+
+  padding:20px;
+
+  border-radius:20px;
+
+  box-shadow:0 5px 20px rgba(0,0,0,0.08);
+}
+
+.fc-toolbar-title{
+  font-size:28px !important;
+  color:#1e3a5f;
+}
+
+.fc-button{
+  background:#1e3a5f !important;
+  border:none !important;
+  border-radius:10px !important;
+}
+
+.fc-button:hover{
+  opacity:0.9;
+}
+
+.fc-event{
+  border:none !important;
+  border-radius:8px !important;
+  cursor:pointer;
+}
+
+.fc-daygrid-event{
+  padding:3px;
+}
+
+.fc-day-today{
+  background:#fff7db !important;
+}
+
+.calendar-description{
+  text-align:center;
+  margin-bottom:25px;
+}
+
+.calendar-description p{
+  font-size:18px;
+  color:#555;
+}
+
+/* =========================
+   RESPONSIVE CALENDAR
+========================= */
+
+@media(max-width:768px){
+
+  #calendar{
+    padding:10px;
+  }
+
+  .fc-toolbar{
+    flex-direction:column;
+    gap:10px;
+  }
+
+  .fc-toolbar-title{
+    font-size:22px !important;
+  }
+
+}

@@ -14,6 +14,12 @@
 
   <link rel="stylesheet" href="style.css">
 
+  <!-- FULLCALENDAR -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css"
+    rel="stylesheet"
+  >
+
 </head>
 
 <body>
@@ -30,6 +36,8 @@
       <li><a href="#about">Tentang</a></li>
 
       <li><a href="#schedule">Jadwal</a></li>
+
+      <li><a href="#church-calendar">Kalender</a></li>
 
       <li><a href="#services">Pelayanan</a></li>
 
@@ -122,7 +130,7 @@
 
   </section>
 
-    <!-- GOOGLE CALENDAR -->
+  <!-- GOOGLE CALENDAR -->
   <section id="church-calendar">
 
     <h2>Kalender Ibadah Bulanan</h2>
@@ -130,99 +138,13 @@
     <div class="calendar-description">
 
       <p>
-        Jadwal ibadah otomatis terhubung dengan Google Calendar Gereja.
+        Jadwal otomatis sinkron dengan Google Calendar Gereja.
       </p>
 
-      <a
-        class="calendar-main-btn"
-        href="https://calendar.google.com/"
-        target="_blank"
-      >
-        Buka Google Calendar
-      </a>
-
     </div>
 
-    <!-- GOOGLE CALENDAR EMBED -->
-    <div class="google-calendar-wrapper">
-
-      <iframe
-        src="https://calendar.google.com/calendar/embed?src=multimediagiabudiman%40gmail.com&ctz=Asia%2FJakarta"
-        style="border:0"
-        frameborder="0"
-        scrolling="no"
-      ></iframe>
-
-    </div>
-
-    <!-- EVENT LIST -->
-    <div class="event-list">
-
-      <div class="event-card">
-
-        <div class="event-date">
-          <span>MIN</span>
-          <h3>12</h3>
-        </div>
-
-        <div class="event-info">
-
-          <h3>Ibadah Raya</h3>
-
-          <p>07.00 WIB • Gedung Utama</p>
-
-          <p>
-            Ibadah umum jemaat GIA Budiman.
-          </p>
-
-        </div>
-
-        <div class="event-action">
-
-          <a
-            target="_blank"
-            href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Ibadah+Raya+GIA+Budiman&dates=20260512T000000Z/20260512T020000Z&details=Ibadah+Raya+GIA+Budiman&location=GIA+Budiman"
-          >
-            Tambahkan ke Kalender Saya
-          </a>
-
-        </div>
-
-      </div>
-
-      <div class="event-card">
-
-        <div class="event-date">
-          <span>RAB</span>
-          <h3>15</h3>
-        </div>
-
-        <div class="event-info">
-
-          <h3>Doa Rabu</h3>
-
-          <p>19.00 WIB • Ruang Doa</p>
-
-          <p>
-            Persekutuan doa tengah minggu.
-          </p>
-
-        </div>
-
-        <div class="event-action">
-
-          <a
-            target="_blank"
-            href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Doa+Rabu+GIA+Budiman&dates=20260515T120000Z/20260515T140000Z&details=Persekutuan+Doa&location=GIA+Budiman"
-          >
-            Tambahkan ke Kalender Saya
-          </a>
-
-        </div>
-
-      </div>
-
-    </div>
+    <!-- FULLCALENDAR -->
+    <div id="calendar"></div>
 
   </section>
 
@@ -292,7 +214,6 @@
     class="fullscreen-modal"
   >
 
-    <!-- CLOSE -->
     <span
       class="close-btn"
       onclick="closeFullscreen()"
@@ -300,7 +221,6 @@
       &times;
     </span>
 
-    <!-- PREV -->
     <button
       class="fullscreen-prev"
       onclick="changeSlide(-1)"
@@ -308,10 +228,8 @@
       ❮
     </button>
 
-    <!-- IMAGE -->
     <img id="fullscreenImage">
 
-    <!-- NEXT -->
     <button
       class="fullscreen-next"
       onclick="changeSlide(1)"
@@ -360,7 +278,7 @@
       </p>
 
       <p>
-        ✉ GIABudiman@email.com
+        ✉ multimediaGIABudiman@gmail.com
       </p>
 
     </div>
@@ -375,6 +293,12 @@
     </p>
 
   </footer>
+
+  <!-- FULLCALENDAR -->
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+
+  <!-- GOOGLE CALENDAR -->
+  <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/google-calendar@6.1.15/index.global.min.js"></script>
 
   <script src="script.js"></script>
 

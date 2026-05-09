@@ -308,3 +308,64 @@ document.addEventListener(
 ========================= */
 
 loadSlides();
+
+/* =========================
+   GOOGLE CALENDAR
+========================= */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  function(){
+
+    const calendarEl =
+      document.getElementById("calendar");
+
+    const calendar =
+      new FullCalendar.Calendar(
+        calendarEl,
+        {
+
+          initialView:"dayGridMonth",
+
+          height:"auto",
+
+          locale:"id",
+
+          headerToolbar:{
+            left:"prev,next today",
+            center:"title",
+            right:"dayGridMonth,listMonth"
+          },
+
+          buttonText:{
+            today:"Hari Ini",
+            month:"Bulan",
+            list:"Daftar"
+          },
+
+          googleCalendarApiKey:
+            "AIzaSyDLHZZ_VnhrjQpbHQ7h37OhvC_iT5tGlMA",
+
+          events:{
+            googleCalendarId:
+              "multimediagiabudiman@gmail.com"
+          },
+
+          eventClick:function(info){
+
+            info.jsEvent.preventDefault();
+
+            window.open(
+              info.event.url,
+              "_blank"
+            );
+
+          }
+
+        }
+      );
+
+    calendar.render();
+
+  }
+);
