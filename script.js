@@ -1,26 +1,6 @@
 const images = [];
 const totalSlides = 50;
 
-for(let i = 1; i <= totalSlides; i++){
-
-  const imgPath = `warta/${i}.jpg`;
-
-  const testImg = new Image();
-
-  testImg.src = imgPath;
-
-  testImg.onload = function(){
-
-    images.push(imgPath);
-
-    if(images.length === 1){
-      updateSlide(false);
-    }
-
-    renderThumbnails();
-  };
-}
-
 let currentIndex = 0;
 
 const mainSlide =
@@ -36,7 +16,38 @@ const fullscreenModal =
   document.getElementById("fullscreenModal");
 
 /* =========================
-   RENDER THUMBNAIL
+   LOAD IMAGES
+========================= */
+
+function loadImages(){
+
+  for(let i = 1; i <= totalSlides; i++){
+
+    const imgPath = `warta/${i}.jpg`;
+
+    const testImg = new Image();
+
+    testImg.src = imgPath;
+
+    testImg.onload = function(){
+
+      images.push(imgPath);
+
+      if(images.length === 1){
+
+        renderThumbnails();
+
+        updateSlide(false);
+      }
+
+    };
+
+  }
+
+}
+
+/* =========================
+   RENDER THUMBNAILS
 ========================= */
 
 function renderThumbnails(){
@@ -57,7 +68,7 @@ function renderThumbnails(){
 
       currentIndex = index;
 
-      updateSlide(true);
+      updateSlide();
 
     };
 
@@ -65,7 +76,41 @@ function renderThumbnails(){
 
   });
 
-  autoScrollThumbnail();
+}
+
+/* =========================
+   UPDATE ACTIVE THUMBNAIL
+========================= */
+
+function updateActiveThumbnail(){
+
+  const thumbs =
+    thumbnailContainer.querySelectorAll("img");
+
+  thumbs.forEach((thumb, index)=>{
+
+    thumb.classList.toggle(
+      "active-thumb",
+      index === currentIndex
+    );
+
+  });
+
+  const activeThumb =
+    document.querySelector(".active-thumb");
+
+  if(activeThumb){
+
+    activeThumb.scrollIntoView({
+
+      behavior:"smooth",
+      inline:"center",
+      block:"nearest"
+
+    });
+
+  }
+
 }
 
 /* =========================
@@ -89,7 +134,8 @@ function updateSlide(animated = true){
 
   fullscreenImage.src = images[currentIndex];
 
-  renderThumbnails();
+  updateActiveThumbnail();
+
 }
 
 /* =========================
@@ -108,29 +154,8 @@ function changeSlide(direction){
     currentIndex = images.length - 1;
   }
 
-  updateSlide(true);
-}
+  updateSlide();
 
-/* =========================
-   AUTO SCROLL THUMBNAIL
-========================= */
-
-function autoScrollThumbnail(){
-
-  const activeThumb =
-    document.querySelector(".active-thumb");
-
-  if(activeThumb){
-
-    activeThumb.scrollIntoView({
-
-      behavior:"smooth",
-      inline:"center",
-      block:"nearest"
-
-    });
-
-  }
 }
 
 /* =========================
@@ -142,29 +167,47 @@ function openFullscreen(){
   fullscreenImage.src = images[currentIndex];
 
   fullscreenModal.style.display = "flex";
+
 }
 
 function closeFullscreen(){
 
   fullscreenModal.style.display = "none";
+
 }
 
-/* CLOSE WHEN CLICK BACKGROUND */
 fullscreenModal.addEventListener("click", function(e){
 
   if(e.target === this){
 
     closeFullscreen();
+
   }
 
 });
 
 /* =========================
-   SWIPE MAIN SLIDE
+   SWIPE
 ========================= */
 
 let startX = 0;
 let endX = 0;
+
+function handleSwipe(){
+
+  const diff = startX - endX;
+
+  if(diff > 50){
+    changeSlide(1);
+  }
+
+  if(diff < -50){
+    changeSlide(-1);
+  }
+
+}
+
+/* MAIN SLIDE SWIPE */
 
 mainSlide.addEventListener("touchstart", (e)=>{
 
@@ -180,9 +223,7 @@ mainSlide.addEventListener("touchend", (e)=>{
 
 });
 
-/* =========================
-   SWIPE FULLSCREEN
-========================= */
+/* FULLSCREEN SWIPE */
 
 fullscreenImage.addEventListener("touchstart", (e)=>{
 
@@ -199,43 +240,27 @@ fullscreenImage.addEventListener("touchend", (e)=>{
 });
 
 /* =========================
-   HANDLE SWIPE
-========================= */
-
-function handleSwipe(){
-
-  const diff = startX - endX;
-
-  if(diff > 50){
-
-    changeSlide(1);
-  }
-
-  if(diff < -50){
-
-    changeSlide(-1);
-  }
-}
-
-/* =========================
    KEYBOARD SUPPORT
 ========================= */
 
 document.addEventListener("keydown", (e)=>{
 
   if(e.key === "ArrowRight"){
-
     changeSlide(1);
   }
 
   if(e.key === "ArrowLeft"){
-
     changeSlide(-1);
   }
 
   if(e.key === "Escape"){
-
     closeFullscreen();
   }
 
 });
+
+/* =========================
+   INIT
+========================= */
+
+loadImages();

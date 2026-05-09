@@ -2,29 +2,45 @@
 <html lang="id">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>GIA Budiman</title>
 
   <link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
 
   <!-- NAVBAR -->
   <nav>
+
     <h1>GIA BUDIMAN</h1>
 
     <ul>
+
       <li><a href="#home">Home</a></li>
+
       <li><a href="#about">Tentang</a></li>
+
       <li><a href="#schedule">Jadwal</a></li>
+
       <li><a href="#services">Pelayanan</a></li>
+
       <li><a href="#warta">Warta</a></li>
+
       <li><a href="#gallery">Galeri</a></li>
+
       <li><a href="#contact">Kontak</a></li>
+
     </ul>
+
   </nav>
 
   <!-- HERO -->
@@ -32,15 +48,22 @@
 
     <div class="hero-content">
 
-      <h2>Selamat Datang di Gereja GIA Budiman</h2>
+      <h2>
+        Selamat Datang di Gereja GIA Budiman
+      </h2>
 
       <p>
-        Tempat bertumbuh dalam iman, kasih, dan pelayanan.
+        Tempat bertumbuh dalam iman,
+        kasih, dan pelayanan.
       </p>
 
-      <a href="#schedule" class="btn">Jadwal Ibadah</a>
+      <a href="#schedule" class="btn">
+        Jadwal Ibadah
+      </a>
 
-      <a href="#warta" class="btn">Warta Jemaat</a>
+      <a href="#warta" class="btn">
+        Warta Jemaat
+      </a>
 
     </div>
 
@@ -54,8 +77,9 @@
     <div class="card">
 
       <p>
-        Gereja GIA Budiman adalah komunitas yang berfokus pada
-        pertumbuhan rohani, pelayanan, dan kasih kepada sesama.
+        Gereja GIA Budiman adalah komunitas
+        yang berfokus pada pertumbuhan rohani,
+        pelayanan, dan kasih kepada sesama.
       </p>
 
     </div>
@@ -126,61 +150,68 @@
   </section>
 
   <!-- WARTA -->
-<section id="warta">
+  <section id="warta">
 
-  <h2>Warta Jemaat</h2>
+    <h2>Warta Jemaat</h2>
 
-  <div class="slideshow-wrapper">
+    <div class="slideshow-wrapper">
 
-    <div class="slideshow-container">
+      <div class="slideshow-container">
 
-      <!-- SLIDE BESAR -->
-      <img
-        id="mainSlide"
-        class="main-slide"
-        src=""
-        alt="Warta Jemaat"
-        onclick="openFullscreen()"
-      >
+        <img
+          id="mainSlide"
+          class="main-slide"
+          src=""
+          alt="Warta Jemaat"
+          onclick="openFullscreen()"
+        >
+
+      </div>
 
     </div>
 
-  </div>
+    <!-- THUMBNAIL -->
+    <div
+      class="thumbnail-container"
+      id="thumbnailContainer"
+    ></div>
 
-  <!-- THUMBNAIL -->
-  <div class="thumbnail-container" id="thumbnailContainer">
-  </div>
+  </section>
 
-</section>
-
-<!-- FULLSCREEN -->
-<div id="fullscreenModal" class="fullscreen-modal">
-
-  <!-- CLOSE -->
-  <span class="close-btn" onclick="closeFullscreen()">
-    &times;
-  </span>
-
-  <!-- PREV -->
-  <button
-    class="fullscreen-prev"
-    onclick="changeSlide(-1)"
+  <!-- FULLSCREEN -->
+  <div
+    id="fullscreenModal"
+    class="fullscreen-modal"
   >
-    ❮
-  </button>
 
-  <!-- IMAGE -->
-  <img id="fullscreenImage">
+    <!-- CLOSE -->
+    <span
+      class="close-btn"
+      onclick="closeFullscreen()"
+    >
+      &times;
+    </span>
 
-  <!-- NEXT -->
-  <button
-    class="fullscreen-next"
-    onclick="changeSlide(1)"
-  >
-    ❯
-  </button>
+    <!-- PREV -->
+    <button
+      class="fullscreen-prev"
+      onclick="changeSlide(-1)"
+    >
+      ❮
+    </button>
 
-</div>
+    <!-- IMAGE -->
+    <img id="fullscreenImage">
+
+    <!-- NEXT -->
+    <button
+      class="fullscreen-next"
+      onclick="changeSlide(1)"
+    >
+      ❯
+    </button>
+
+  </div>
 
   <!-- GALERI -->
   <section id="gallery">
@@ -189,11 +220,17 @@
 
     <div class="gallery">
 
-      <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0f?q=80&w=1200">
+      <img
+        src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0f?q=80&w=1200"
+      >
 
-      <img src="https://images.unsplash.com/photo-1507692049790-de58290a4334?q=80&w=1200">
+      <img
+        src="https://images.unsplash.com/photo-1507692049790-de58290a4334?q=80&w=1200"
+      >
 
-      <img src="https://images.unsplash.com/photo-1490127252417-7c393f193581?q=80&w=1200">
+      <img
+        src="https://images.unsplash.com/photo-1490127252417-7c393f193581?q=80&w=1200"
+      >
 
     </div>
 
